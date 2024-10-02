@@ -84,7 +84,35 @@ function renderPastVacations() {
     //clear the list of past vacations since we're going to re-render it
     pastVacationContainer.innerHTML = "";
 
-    const pastVacationHeader = document.getElementById
+    const pastVacationHeader = document.createElement("h2");
+    pastVacationHeader.textContent = "Past Vacations";
+
+    const pastVacationList = document.createElement("ul");
+
+    //loop over all vacations and render them
+    vacations.forEach((vacation) =>{
+        const vacationEl = document.createElement("li");
+        vacationEl.textContent = `From ${formatDate(vacation.startDate)}
+        to ${formatDate(vacation.endDate)}`;
+        pastVacationList.appendChild(vacationEl);
+    });
+
+    pastVacationContainer.appendChild(pastVacationHeader);
+    pastVacationContainer.appendChild(pastVacationList);
+
 };
+
+function formatDate(dateString){
+    //convert the date string to a Date object
+    const date = new Date(dateString);
+
+    //format the date into a location specific string.
+    //include your locale for a better user experience.
+    return date.toLocaleDateString("en-US", {timeZone: "UTC"});
+};
+
+renderPastVacations();
+
+
 
 
