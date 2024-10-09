@@ -113,6 +113,38 @@ function formatDate(dateString){
 
 renderPastVacations();
 
+//register the service worker
+if ("serviceWork" in navigator){
+    navigator.serviceWorker.register("sw.js").then((registation)=>{
+        console.log("Service worker registered with scope:",registation.scope);
+    })
+    .catch((error)=>{
+        console.log("Service worker registration failed:", error);
+    });
+}
+
+//listen for messages from the service worker
+navigator.serviceWorker.addEventListener("message", (event)=>{
+    console.log("received a message from service worker:", event.data);
+
+    if(event.data.type === "update"){
+        console.log("Update received:", event.data.data);
+    }
+});
+
+//handle different message types
+
+
+//function to send a message to the service worker
+function sendMessageToSw(message){
+    if(navigator.serviceWorker.controller){
+        navigator.serviceWorker.controller.postMessage(message);
+    }
+}
+
+document.getElementById("sendButton").addEventListener("click", ()=>{
+    sendMessageToSw({type: "action", data: "Button clicked"});
+});
 
 
 
