@@ -142,9 +142,24 @@ if ("serviceWork" in navigator){
 //     }
 // }
 
+//send a amessage when button is clicked
 // document.getElementById("sendButton").addEventListener("click", ()=>{
 //     sendMessageToSw({type: "action", data: "Button clicked"});
 // });
 
+//create a broadcast channe; - name here needs to match the name in sw
+const channel = new BroadcastChannel("pwa_channel");
 
+//listen for messages
+channel.onmessage = (event) => {
+    console.log("Received a message in PWA:", event.data);
+    document.getElementById("messages")
+        .insertAdjacentElement("beforeend", '<p>Received : ${event.data}</p>');
+};
 
+//send a amessage when button is clicked
+document.getElementById("sendButton").addEventListener("click", ()=>{
+    const message = "Hello from PWA!";
+    channel.postMessage(message);
+    console.log("Sent message from PWA:", message);
+});

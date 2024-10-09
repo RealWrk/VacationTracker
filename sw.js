@@ -1,4 +1,4 @@
-const VERSION = "v2";
+const VERSION = "v3";
 
 // offline resource list
 const APP_STATIC_RESOURCES = [
@@ -84,28 +84,38 @@ self.addEventListener("fetch", (event) => {
     
 });
 
+// //send a message to the client - we will use to update data later
+// function sendMessageToPwa(message){
+//     self.clients.matchAll().then((clients) => {
+//         clients.forEach((client) => {
+//             client.postMessage(message);
+//         });
+//     });
 
-//send a message to the client - we will use to update data later
-function sendMessageToPwa(message){
-    self.clients.matchAll().then((clients) => {
-        clients.forEach((client) => {
-            client.postMessage(message);
-        });
-    });
+// }
 
-}
+// setInterval(()=>{
+//     sendMessageToPwa({type: "update", data: "New data available"})
+// },10000);
 
-setInterval(()=>{
-    sendMessageToPwa({type: "update", data: "New data available"})
-},10000);
+// //listen for messages from the app
+// self.addEventListener("message", (event)=>{
+//     console.log("service worker received a message", event.data);
 
-//listen for messages from the app
-self.addEventListener("message", (event)=>{
-    console.log("service worker received a message", event.data);
+//     //you can respond back if needed
+//     event.source.postMessage({
+//         type: "response",
+//         data: "Message received by sw",
+//     });
+// });
 
-    //you can respond back if needed
-    event.source.postMessage({
-        type: "response",
-        data: "Message received by sw",
-    });
-});
+//create a broadcast channe; - name here needs to match the name in sw
+const channel = new BroadcastChannel("pwa_channel");
+
+//listen for messages
+channel.onmessage = (event) => {
+    console.log("Received message in Service Worker:", event.data);
+    
+    //echo the message back to the PWA
+    channel.postMessage("Service Worker received:" + event.data);
+};
