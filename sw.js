@@ -101,7 +101,11 @@ setInterval(()=>{
 
 //listen for messages from the app
 self.addEventListener("message", (event)=>{
-    console.log("service worker recieved a message", event.data);
+    console.log("service worker received a message", event.data);
 
-    
+    //you can respond back if needed
+    event.source.postMessage({
+        type: "response",
+        data: "Message received by sw",
+    });
 });
