@@ -94,3 +94,7 @@ function sendMessageToPwa(message){
     });
 
 }
+
+setInterval(()=>{
+    sendMessageToPwa({type: "update", data: "New data available"})
+},10000);
