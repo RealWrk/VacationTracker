@@ -20,7 +20,7 @@ self.addEventListener("install", (event) => {
         })()
     );
 });
-
+  
 /* use the activate even to delete any old caches so we dont't run out of space.
     We're going to delete all but the current one. Then set the service worker
     as the controller for our app (PWA). */
