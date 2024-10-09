@@ -98,3 +98,10 @@ function sendMessageToPwa(message){
 setInterval(()=>{
     sendMessageToPwa({type: "update", data: "New data available"})
 },10000);
+
+//listen for messages from the app
+self.addEventListener("message", (event)=>{
+    console.log("service worker recieved a message", event.data);
+
+    
+});
