@@ -83,3 +83,14 @@ self.addEventListener("fetch", (event) => {
     );
     
 });
+
+
+//send a message to the client - we will use to update data later
+function sendMessageToPwa(message){
+    self.clients.matchAll().then((clients) => {
+        clients.forEach((client) => {
+            client.postMessage(message);
+        });
+    });
+
+}
