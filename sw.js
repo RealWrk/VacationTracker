@@ -53,7 +53,8 @@ self.addEventListener("fetch", (event) => {
     event.respondWith(
         (async() => {
             // try to get the resource from the cache
-            const cachedResponse = await caches.match(event.request);
+            const cache = await caches.open(CACHE_NAME);
+            const cachedResponse = await cache.match(event.request);
             if (cachedResponse) {
                 return cachedResponse;
             }
