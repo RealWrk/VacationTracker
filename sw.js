@@ -142,5 +142,5 @@ self.addEventListener("sync", function(event){
 });
 
 function sendDataToSever(){
-    
+
 }
