@@ -9,7 +9,7 @@
         <link rel="icon" href="assets/icons/icon-48x48.png" />
 
         <script>
-            if("serviceworker" in navigator){
+            if("serviceWorker" in navigator){
                 navigator.serviceWorker.register("sw.js").then(
                     (registration) => {
                         console.log("Service worker registration successful:" , registration.scope);

@@ -192,3 +192,46 @@ request.onupgradeneeded = function (event){
 };
 
 //add data to out db, we need a transaction to accomplish it
+function addDataToIndexedDB(data){
+    return new Promise((resolve, reject) =>{
+
+        const transaction = db.transaction(["pendingData"], "readwrite");
+        const objectStore = transaction.objectStore("pendingData");
+        const request = objectStore.add({data: data});
+
+        request.onsuccess = function(event) {
+            resolve();
+        };
+        request.onerror = function(event){
+            reject("Error storing data: " + event.target.error);
+        };
+
+    });
+}
+
+//handle form submission
+document.getElementById("dataForm").addEventListener("submit",function(event){
+    event.preventDefault();
+
+    //get our data
+    const data = document.getElementById("dataInput").value;
+    
+    //we need to check to see if both the serviceWorker and the SyncManager available
+    if("serviceWorker" in navigator && "SyncManager" in window){
+        //we're good to add the data to the db for offline persistence
+        addDataToIndexedDB(data).then(() => navigator.serviceWorker.ready)
+        .then((registation) =>{
+            //registers a sync event for when the device come online
+            return registation.sync.register("send-data");
+        })
+        .then(() =>{
+            //update the UI for successful registration
+            document.getElementById("status").textContent = 
+            "Sync registered. Data will be sent when online";
+        })
+        .catch((error)=>{
+            console.log("Error: ", error);
+        })
+    }
+
+});
