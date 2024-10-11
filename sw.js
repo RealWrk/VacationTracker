@@ -53,7 +53,7 @@ self.addEventListener("fetch", (event) => {
     event.respondWith(
         (async() => {
             // try to get the resource from the cache
-            const cachedResponse = await cache.match(event.request);
+            const cachedResponse = await caches.match(event.request);
             if (cachedResponse) {
                 return cachedResponse;
             }
@@ -119,3 +119,28 @@ channel.onmessage = (event) => {
     //echo the message back to the PWA
     channel.postMessage("Service Worker received:" + event.data);
 };
+
+//open or create the database
+let db;
+const dbName = "SyncDatabase";
+const request = indexedDB.open(dbName,1);
+
+request.onerror = function (event){
+    console.error("Database error: " + event.target.error);
+};
+
+request.onsuccess = function(event){
+    //now we actually have our db
+    db = event.target.result;
+    console.log("Database opened successfully in serviceWorker");
+};
+
+self.addEventListener("sync", function(event){
+    if(event.tag === "send-data"){
+        event.waitUntil(sendDataToSever());
+    }
+});
+
+function sendDataToSever(){
+    
+}

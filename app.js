@@ -232,6 +232,31 @@ document.getElementById("dataForm").addEventListener("submit",function(event){
         .catch((error)=>{
             console.log("Error: ", error);
         })
+    } else{
+        //background sync isn't supported, try to send immediatley
+        sendData(data)
+        .then((result)=>{
+            //update UI
+            document.getElementById("status").textContent = result;
+        })
+        .catch((error)=>{
+            //update UI
+            document.getElementById("status").textContent = error.message;
+        })
     }
 
 });
+
+function sendData(data){
+    console.log("Attempting to send data:", data);
+
+    return new Promise((resolve, reject) =>{
+        setTimeout(()=>{
+            if(Math.random() > 0.5){
+                resolve("Data sent successfully");
+            } else{
+                reject(new Error("Failed to send data"));
+            }
+        }, 1000);
+    })
+}
