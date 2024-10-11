@@ -7,6 +7,19 @@
         <link rel="stylesheet" href="style.css" />
         <link rel="manifest" href="vacationtracker.json" />
         <link rel="icon" href="assets/icons/icon-48x48.png" />
+
+        <script>
+            if("serviceworker" in navigator){
+                navigator.serviceWorker.register("sw.js").then(
+                    (registration) => {
+                        console.log("Service worker registration successful:" , registration);
+                    },
+                    (error) => {
+                        console.log("service worker registration failure:", registration);
+                    }
+                )
+            }
+        </script>
     </head>
     <body>
         <h1>Vacation tracker</h1>
@@ -31,6 +44,11 @@
             <button id="sendButton">Send a message</button>
         </div>
 
+        <form id="dataForm">
+            <input type="text" id="dataInput" placeholder="Enter to send" />
+            <button type="submit">Send Data</button>
+        </form>
+        <div id="status"></div>
         <script src="app.js" defer></script>
     </body>
 </html>

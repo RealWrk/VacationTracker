@@ -163,3 +163,8 @@ document.getElementById("sendButton").addEventListener("click", ()=>{
     channel.postMessage(message);
     console.log("Sent message from PWA:", message);
 });
+
+//open or create the database
+let db;
+const dbName = "SyncDatabase";
+const request = indexedDB.open(dbName,1);
